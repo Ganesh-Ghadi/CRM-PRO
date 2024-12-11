@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ClientResource;
+use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Api\ClientsController;
 
@@ -41,18 +43,18 @@ class ClientsController extends BaseController
      * @bodyParam contact_no string The contact number of the Client.
      * @bodyParam email string The email of the Client.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreClientRequest $request): JsonResponse
     {
         $clients = new Client();
         $clients->client = $request->input("client");
-        $clients->street_address = $request->input("streetAddress");
+        $clients->street_address = $request->input("street_address");
         $clients->area = $request->input("area");
         $clients->city = $request->input("city");
         $clients->state = $request->input("state");
         $clients->pincode = $request->input("pincode");
         $clients->country = $request->input("country");
         $clients->gstin = $request->input("gstin");
-        $clients->contact_no = $request->input("contactNo");
+        $clients->contact_no = $request->input("contact_no");
         $clients->email = $request->input("email"); 
         $clients->save();
 
@@ -87,7 +89,7 @@ class ClientsController extends BaseController
      * @bodyParam email string The email of the Client.
      
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateClientRequest $request, string $id): JsonResponse
     {
         $clients = Client::find($id);
         if(!$clients){
@@ -95,14 +97,14 @@ class ClientsController extends BaseController
         }
 
         $clients->client = $request->input("client");
-        $clients->street_address = $request->input("streetAddress");
+        $clients->street_address = $request->input("street_address");
         $clients->area = $request->input("area");
         $clients->city = $request->input("city");
         $clients->state = $request->input("state");
         $clients->pincode = $request->input("pincode");
         $clients->country = $request->input("country");
         $clients->gstin = $request->input("gstin");
-        $clients->contact_no = $request->input("contactNo");
+        $clients->contact_no = $request->input("contact_no");
         $clients->email = $request->input("email"); 
         $clients->save();
 

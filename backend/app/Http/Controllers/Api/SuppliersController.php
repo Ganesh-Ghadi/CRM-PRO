@@ -42,22 +42,22 @@ class SuppliersController extends BaseController
      * @bodyParam mobile_2 string The mobile 2 of the Supplier.
      * @bodyParam email string The email of the Supplier.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreSupplierRequest $request): JsonResponse
     {
         $suppliers = new Supplier();
         $suppliers->supplier = $request->input("supplier");
-        $suppliers->street_address = $request->input("streetAddress");
+        $suppliers->street_address = $request->input("street_address");
         $suppliers->area = $request->input("area");
         $suppliers->city = $request->input("city");
         $suppliers->state = $request->input("state");
         $suppliers->pincode = $request->input("pincode");
         $suppliers->country = $request->input("country");
         $suppliers->gstin = $request->input("gstin");
-        $suppliers->contact_no = $request->input("contactNo");
+        $suppliers->contact_no = $request->input("contact_no");
         $suppliers->department = $request->input("department");
         $suppliers->designation = $request->input("designation");
-        $suppliers->mobile_1 = $request->input("mobile1");
-        $suppliers->mobile_2 = $request->input("mobile2");
+        $suppliers->mobile_1 = $request->input("mobile_1");
+        $suppliers->mobile_2 = $request->input("mobile_2");
         $suppliers->email = $request->input("email"); 
         $suppliers->save();
 
@@ -95,7 +95,7 @@ class SuppliersController extends BaseController
      * @bodyParam mobile_2 string The mobile 2 of the Supplier.
      * @bodyParam email string The email of the Supplier.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateSupplierRequest $request, string $id): JsonResponse
     {
         // Find the existing supplier
         $suppliers = Supplier::find($id);
@@ -106,18 +106,18 @@ class SuppliersController extends BaseController
     
         // Update the supplier properties
         $suppliers->supplier = $request->input("supplier");
-        $suppliers->street_address = $request->input("streetAddress");
+        $suppliers->street_address = $request->input("street_address");
         $suppliers->area = $request->input("area");
         $suppliers->city = $request->input("city");
         $suppliers->state = $request->input("state");
         $suppliers->pincode = $request->input("pincode");
         $suppliers->country = $request->input("country");
         $suppliers->gstin = $request->input("gstin");
-        $suppliers->contact_no = $request->input("contactNo");
+        $suppliers->contact_no = $request->input("contact_no");
         $suppliers->department = $request->input("department");
         $suppliers->designation = $request->input("designation");
-        $suppliers->mobile_1 = $request->input("mobile1");
-        $suppliers->mobile_2 = $request->input("mobile2");
+        $suppliers->mobile_1 = $request->input("mobile_1");
+        $suppliers->mobile_2 = $request->input("mobile_2");
         $suppliers->email = $request->input("email");
     
         // Save the updated supplier
