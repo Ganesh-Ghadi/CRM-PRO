@@ -9,10 +9,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactResource;
 use App\Http\Controllers\Api\BaseController;
 
+
+     /**
+     * @group Contact Management.
+     */
+
 class ContactsController extends BaseController
 {
    /**
-     * Display Contact.
+     * All Contact.
      */
     public function index(): JsonResponse
     {
@@ -23,21 +28,31 @@ class ContactsController extends BaseController
 
     /**
      * Store Contact.
+     * @bodyParam clientId string The client id of the Contact.
+     * @bodyParam contactPerson string The contact person of the Contact.
+     * @bodyParam department string The department of the Contact.
+     * @bodyParam designation string The designation of the Contact.
+     * @bodyParam mobile1 string The mobile1 of the Contact.
+     * @bodyParam mobile2 string The mobile2 of the Contact.
+     * @bodyParam email string The email of the Contact.
      */
     public function store(Request $request): JsonResponse
     {
         $contact = new Contact();
-        $contact->company_id = $request->input("companyId");
-        $contact->name = $request->input("name");
-        $contact->mobile = $request->input("mobile");
+        $contact->client_id = $request->input("clientId");
+        $contact->contact_person = $request->input("contactPerson");
+        $contact->department = $request->input("department");
+        $contact->designation = $request->input("designation");
+        $contact->mobile_1 = $request->input("mobile1");
+        $contact->mobile_2 = $request->input("mobile2");
         $contact->email = $request->input("email");
         $contact->save();
         return $this->sendResponse(['Contact'=> new ContactResource($contact)], "Contact Stored successfuly");
 
     }
-
+         
     /**
-     * Display Contact.
+     * Show Contact.
      */
     public function show(string $id): JsonResponse
     {
@@ -51,6 +66,13 @@ class ContactsController extends BaseController
 
     /**
      * Update Contact.
+     * @bodyParam clientId string The client id of the Contact.
+     * @bodyParam contactPerson string The contact person of the Contact.
+     * @bodyParam department string The department of the Contact.
+     * @bodyParam designation string The designation of the Contact.
+     * @bodyParam mobile1 string The mobile1 of the Contact.
+     * @bodyParam mobile2 string The mobile2 of the Contact.
+     * @bodyParam email string The email of the Contact.
      */
     public function update(Request $request, string $id): JsonResponse
     {
@@ -59,9 +81,12 @@ class ContactsController extends BaseController
             return $this->sendError("Contact not found.", ['Error'=> "Contact not found"]);
         }
 
-        $contact->company_id = $request->input("companyId");
-        $contact->name = $request->input("name");
-        $contact->mobile = $request->input("mobile");
+        $contact->client_id = $request->input("clientId");
+        $contact->contact_person = $request->input("contactPerson");
+        $contact->department = $request->input("department");
+        $contact->designation = $request->input("designation");
+        $contact->mobile_1 = $request->input("mobile1");
+        $contact->mobile_2 = $request->input("mobile2");
         $contact->email = $request->input("email");
         $contact->save();
         return $this->sendResponse(['Contact'=> new ContactResource($contact)], "Contact Updated successfuly");
@@ -69,7 +94,7 @@ class ContactsController extends BaseController
     }
 
     /**
-     * Remove Contact.
+     * Destroy Contact.
      */
     public function destroy(string $id): JsonResponse
     {
