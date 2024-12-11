@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateClientRequest extends FormRequest
+class UpdateContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,10 +22,12 @@ class UpdateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client' => [
+          'contact_person' => [
                 'required',
-                'unique:clients,client,' . $this->route('client'),
+                'unique:contacts,contact_person,' . $this->route('contact'), 
             ],
         ];
     }
+
+    
 }
