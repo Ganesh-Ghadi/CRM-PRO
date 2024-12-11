@@ -14,9 +14,9 @@ use App\Http\Requests\UpdateDepartmentRequest;
 class DepartmentController extends BaseController
 {
     /**
-     * Display All Departments.
+     * All Departments.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $query = Department::query();
 
@@ -41,8 +41,9 @@ class DepartmentController extends BaseController
 
     /**
      * Store Department.
+     * @bodyParam department_name string The name of the department.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreDepartmentRequest $request): JsonResponse
     {
         $department = new Department();
         $department->department_name = $request->input("department_name");
@@ -67,8 +68,9 @@ class DepartmentController extends BaseController
 
     /**
      * Update Department.
+     * @bodyParam department_name string The name of the department.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateDepartmentRequest $request, string $id): JsonResponse
     {
         $department = Department::find($id);
         if(!$department){

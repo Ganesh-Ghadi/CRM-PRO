@@ -7,24 +7,46 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Controllers\Api\BaseController;
 
+   /**
+     * @group Product Management
+     */
+    
 class ProductsController extends BaseController
 {
     /**
      * All Products.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $products = Product::all();
-        return $this->sendResponse(['Products'=> ProductResource::collection($products)], "Products retrived successfuly");
+        $query = Product::query();
+
+        if ($request->query('search')) {
+            $searchTerm = $request->query('search');
+    
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('department_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        $products = $query->paginate(5);
+
+        return $this->sendResponse(["Product"=>ProductResource::collection($products),
+        'pagination' => [
+            'current_page' => $products->currentPage(),
+            'last_page' => $products->lastPage(),
+            'per_page' => $products->perPage(),
+            'total' => $products->total(),
+        ]], "Products retrived successfully");
 
     }
 
     /**
      * Store Product.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreProductRequest $request): JsonResponse
     {
         $product = new Product();
         $product->product_category_id = $request->input("product_category_id");
@@ -56,7 +78,7 @@ class ProductsController extends BaseController
     /**
      * Update Product.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateProductRequest $request, string $id): JsonResponse
     {
         $product = Product::find($id);
         if(!$product){
