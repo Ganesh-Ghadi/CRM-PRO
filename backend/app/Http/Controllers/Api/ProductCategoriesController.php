@@ -12,7 +12,7 @@ use App\Http\Resources\ProductCategoryResource;
 class ProductCategoriesController extends BaseController
 {
     /**
-     * Display Product Category.
+     * All Product Category.
      */
     public function index(): JsonResponse
     {
@@ -27,7 +27,7 @@ class ProductCategoriesController extends BaseController
     public function store(Request $request): JsonResponse
     {
         $productCategory = new ProductCategory();
-        $productCategory->name = $request->input("name");
+        $productCategory->product_category = $request->input("product_category");
         $productCategory->save();
         return $this->sendResponse(['ProductCategory'=> new ProductCategoryResource($productCategory)], "Product Category Stored successfuly");
 
@@ -55,7 +55,7 @@ class ProductCategoriesController extends BaseController
         if(!$productCategory){
             return $this->sendError("Product Category not found.", ['Error'=> "Product Category not found"]);
         }
-        $productCategory->name = $request->input("name");
+        $productCategory->product_ = $request->input("name");
         $productCategory->save();
         return $this->sendResponse(['ProductCategory'=> new ProductCategoryResource($productCategory)], "Product Category Updated successfuly");
          

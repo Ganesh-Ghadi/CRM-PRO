@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\BaseController;
 class ProductsController extends BaseController
 {
     /**
-     * Display Product.
+     * All Products.
      */
     public function index(): JsonResponse
     {
@@ -28,15 +28,20 @@ class ProductsController extends BaseController
     {
         $product = new Product();
         $product->product_category_id = $request->input("product_category_id");
-        $product->name = $request->input("name");
-        $product->brand = $request->input("brand");
+        $product->supplier_id = $request->input("supplier_id");
+        $product->product = $request->input("product");
+        $product->model = $request->input("model");
+        $product->manufacturer = $request->input("manufacturer");
+        $product->opening_qty = $request->input("opening_qty");
+        $product->closing_qty = $request->input("closing_qty");
+        $product->last_traded_price = $request->input("last_traded_price");
         $product->save();
         return $this->sendResponse(['Product'=> new ProductResource($product)], "Product Stored successfuly");
 
     }
 
     /**
-     * Display Product.
+     * Show Product.
      */
     public function show(string $id): JsonResponse
     {
@@ -59,15 +64,20 @@ class ProductsController extends BaseController
         }
 
         $product->product_category_id = $request->input("product_category_id");
-        $product->name = $request->input("name");
-        $product->brand = $request->input("brand");
+        $product->supplier_id = $request->input("supplier_id");
+        $product->product = $request->input("product");
+        $product->model = $request->input("model");
+        $product->manufacturer = $request->input("manufacturer");
+        $product->opening_qty = $request->input("opening_qty");
+        $product->closing_qty = $request->input("closing_qty");
+        $product->last_traded_price = $request->input("last_traded_price");
         $product->save();
         return $this->sendResponse(['Product'=> new ProductResource($product)], "Product Updated successfuly");
          
     }
 
     /**
-     * Remove Product.
+     * Destroy Product.
      */
     public function destroy(string $id): JsonResponse
     {
