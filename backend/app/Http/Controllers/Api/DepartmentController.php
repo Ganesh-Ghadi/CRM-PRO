@@ -66,7 +66,7 @@ class DepartmentController extends BaseController
         $department = Department::find($id);
 
         if(!$department){
-            return $this->sendError("Department not found", ['error'=>'Department not found']);
+            return $this->sendError("Department not found", ['error'=>['Department not found']]);
         }
         //  $project->load('users');
         return $this->sendResponse(["Department"=> new DepartmentResource($department)], "Department retrived successfully");
@@ -80,7 +80,7 @@ class DepartmentController extends BaseController
     {
         $department = Department::find($id);
         if(!$department){
-            return $this->sendError("Department not found", ['error'=>'Department not found']);
+            return $this->sendError("Department not found", ['error'=>['Department not found']]);
         }
         $department->department_name = $request->input('department_name');
         $department->save();
