@@ -14,7 +14,7 @@ use App\Http\Controllers\Api\ClientsController;
 
      /**
      * @group Clients Management.
-    */
+     */
   
 class ClientsController extends BaseController
 {
@@ -23,11 +23,27 @@ class ClientsController extends BaseController
     /**
      * All Clients.
      */
-    public function index(): JsonResponse
+    public function index( Request $request): JsonResponse
+
     {
-        $clients = Client::all();
+        $query = Client::query();
         
-        return $this->sendResponse(["Clients"=> ClientResource::collection($clients)], 'Clients Retrived Successfully');
+        if ($request->query('search')) {
+            $searchTerm = $request->query('search');
+    
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('client', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        $clients = $query->paginate(5);
+
+        return $this->sendResponse(["Client"=>ClientResource::collection($clients),
+        'pagination' => [
+            'current_page' => $clients->currentPage(),
+            'last_page' => $clients->lastPage(),
+            'per_page' => $clients->perPage(),
+            'total' => $clients->total(),
+        ]], "Clients retrived successfully");
     }
 
     /**
@@ -125,4 +141,6 @@ class ClientsController extends BaseController
         return $this->sendResponse([], 'Client Deleted Successfully');
 
     }
+
+    
 }
