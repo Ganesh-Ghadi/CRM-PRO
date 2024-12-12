@@ -7,48 +7,6 @@ servers:
   -
     url: 'http://localhost:8000'
 paths:
-  /api/register:
-    post:
-      summary: 'Register User'
-      operationId: registerUser
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: kymjesbedxezgydujlpwhviwl
-                  nullable: false
-                email:
-                  type: string
-                  description: 'Must be a valid email address.'
-                  example: gerda65@example.net
-                  nullable: false
-                password:
-                  type: string
-                  description: 'Must be at least 6 characters.'
-                  example: "R[88cm.%GwV'kg"
-                  nullable: false
-                password_confirmation:
-                  type: string
-                  description: ''
-                  example: omnis
-                  nullable: false
-              required:
-                - name
-                - email
-                - password
-                - password_confirmation
-      security: []
   /api/login:
     post:
       summary: 'Login User'
@@ -68,12 +26,12 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: ernestine.reinger@example.org
+                  example: halle.rice@example.org
                   nullable: false
                 password:
                   type: string
                   description: 'Must be at least 6 characters.'
-                  example: rtJ%;>s
+                  example: '%yh)4x9\~JKb~iQ{u'
                   nullable: false
               required:
                 - email
@@ -99,21 +57,82 @@ paths:
                     type: string
                     example: Unauthenticated.
       tags:
-        - Endpoints
+        - 'Department Management'
       security: []
     post:
-      summary: 'Store permission.'
-      operationId: storePermission
+      summary: 'Store Department.'
+      operationId: storeDepartment
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Department Management'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                department_name:
+                  type: string
+                  description: 'The name of the department.'
+                  example: quo
+                  nullable: false
+      security: []
+  '/api/departments/{id}':
+    get:
+      summary: 'Show Department.'
+      operationId: showDepartment
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Department Management'
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
       description: ''
       parameters: []
       responses: {  }
       tags:
         - Endpoints
       security: []
-  /api/projects:
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the project.'
+        example: neque
+        required: true
+        schema:
+          type: string
+  /api/departments:
     get:
-      summary: 'Display a listing of the resource.'
-      operationId: displayAListingOfTheResource
+      summary: 'All Departments.'
+      operationId: allDepartments
       description: ''
       parameters: []
       responses:
@@ -133,18 +152,30 @@ paths:
         - Endpoints
       security: []
     post:
-      summary: 'Store a newly created resource in storage.'
-      operationId: storeANewlyCreatedResourceInStorage
+      summary: 'Store Department.'
+      operationId: storeDepartment
       description: ''
       parameters: []
       responses: {  }
       tags:
         - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                department_name:
+                  type: string
+                  description: 'The name of the department.'
+                  example: aut
+                  nullable: false
       security: []
-  '/api/projects/{id}':
+  '/api/departments/{id}':
     get:
-      summary: 'Display the specified resource.'
-      operationId: displayTheSpecifiedResource
+      summary: 'Show Department.'
+      operationId: showDepartment
       description: ''
       parameters: []
       responses:
@@ -164,8 +195,309 @@ paths:
         - Endpoints
       security: []
     put:
-      summary: 'Update the specified resource in storage.'
-      operationId: updateTheSpecifiedResourceInStorage
+      summary: 'Update Department.'
+      operationId: updateDepartment
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                department_name:
+                  type: string
+                  description: 'The name of the department.'
+                  example: dolorem
+                  nullable: false
+      security: []
+    delete:
+      summary: 'Delete Department'
+      operationId: deleteDepartment
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the department.'
+        example: dolor
+        required: true
+        schema:
+          type: string
+  /api/products:
+    get:
+      summary: 'All Products.'
+      operationId: allProducts
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store Product.'
+      operationId: storeProduct
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/products/{id}':
+    get:
+      summary: 'Show Product.'
+      operationId: showProduct
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update Product.'
+      operationId: updateProduct
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Destroy Product.'
+      operationId: destroyProduct
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the product.'
+        example: sed
+        required: true
+        schema:
+          type: string
+  /api/companies:
+    get:
+      summary: 'Display Company.'
+      operationId: displayCompany
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store Company.'
+      operationId: storeCompany
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/companies/{id}':
+    get:
+      summary: 'Display Company.'
+      operationId: displayCompany
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update Company.'
+      operationId: updateCompany
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove Company.'
+      operationId: removeCompany
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the company.'
+        example: corrupti
+        required: true
+        schema:
+          type: string
+  /api/contacts:
+    get:
+      summary: 'Display Contact.'
+      operationId: displayContact
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store Contact.'
+      operationId: storeContact
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/contacts/{id}':
+    get:
+      summary: 'Display Contact.'
+      operationId: displayContact
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update Contact.'
+      operationId: updateContact
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove Contact.'
+      operationId: removeContact
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the contact.'
+        example: quas
+        required: true
+        schema:
+          type: string
+  /api/roles:
+    get:
+      summary: 'All Roles.'
+      operationId: allRoles
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store Role.'
+      operationId: storeRole
       description: ''
       parameters: []
       responses: {  }
@@ -180,8 +512,8 @@ paths:
               properties:
                 name:
                   type: string
-                  description: ''
-                  example: ullam
+                  description: 'Must not be greater than 255 characters.'
+                  example: jydlumtzcydfednprpfpyrl
                   nullable: false
               required:
                 - name
@@ -225,9 +557,9 @@ paths:
               properties:
                 name:
                   type: string
-                  description: ''
-                  example: 'Sapiente cum nemo architecto similique sunt consequatur optio.'
-                  nullable: true
+                  description: 'Must not be greater than 255 characters.'
+                  example: obusvvelzd
+                  nullable: false
               required:
                 - name
       security: []
@@ -244,15 +576,15 @@ paths:
       -
         in: path
         name: id
-        description: 'The ID of the project.'
-        example: quia
+        description: 'The ID of the role.'
+        example: soluta
         required: true
         schema:
           type: string
-  /api/logout:
+  /api/leads:
     get:
-      summary: 'Logout User'
-      operationId: logoutUser
+      summary: 'Display All Leads.'
+      operationId: displayAllLeads
       description: ''
       parameters: []
       responses:
@@ -271,7 +603,277 @@ paths:
       tags:
         - Endpoints
       security: []
+    post:
+      summary: 'Store Leads.'
+      operationId: storeLeads
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/leads/{id}':
+    get:
+      summary: 'Display Lead.'
+      operationId: displayLead
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update Lead.'
+      operationId: updateLead
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove Lead.'
+      operationId: removeLead
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the lead.'
+        example: omnis
+        required: true
+        schema:
+          type: string
+  /api/users:
+    post:
+      summary: 'Store User'
+      operationId: storeUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    get:
+      summary: 'All User'
+      operationId: allUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  '/api/users/{id}':
+    put:
+      summary: 'Update User'
+      operationId: updateUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    get:
+      summary: 'show User'
+      operationId: showUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'delete User'
+      operationId: deleteUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: ex
+        required: true
+        schema:
+          type: string
+  /api/products:
+    get:
+      summary: 'All Products.'
+      operationId: allProducts
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/product_categories:
+    get:
+      summary: 'All Product Category.'
+      operationId: allProductCategory
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Product Category Management'
+      security: []
+    post:
+      summary: 'Store Product Category.'
+      operationId: storeProductCategory
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Product Category Management'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_category:
+                  type: string
+                  description: 'The name of the product category.'
+                  example: consectetur
+                  nullable: false
+      security: []
+  '/api/product_categories/{id}':
+    get:
+      summary: 'Display Product Category.'
+      operationId: displayProductCategory
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Product Category Management'
+      security: []
+    put:
+      summary: 'Update Product Category.'
+      operationId: updateProductCategory
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Product Category Management'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_category:
+                  type: string
+                  description: 'The name of the product category.'
+                  example: consequuntur
+                  nullable: false
+      security: []
+    delete:
+      summary: 'Remove Product Category.'
+      operationId: removeProductCategory
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Product Category Management'
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the product category.'
+        example: omnis
+        required: true
+        schema:
+          type: string
 tags:
+  -
+    name: 'Department Management'
+    description: ''
+  -
+    name: 'Employee Management'
+    description: ''
   -
     name: 'Clients Management.'
     description: ''
@@ -280,4 +882,7 @@ tags:
     description: ''
   -
     name: Endpoints
+    description: ''
+  -
+    name: 'Product Management'
     description: ''

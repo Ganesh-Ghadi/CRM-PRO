@@ -3,11 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\Api\BaseController;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreDepartmentRequest extends FormRequest
+class UpdateEmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +24,10 @@ class StoreDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "department_name" => ['required', 'unique:departments,department_name'],
+            'email' => [
+                'required',
+                'unique:employees,email,' . $this->route('employee'), 
+            ],
         ];
     }
 

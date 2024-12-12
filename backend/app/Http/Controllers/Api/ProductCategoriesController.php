@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Product;
+use App\Models\ProductCategories;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use Illuminate\Http\JsonResponse;
@@ -26,7 +26,7 @@ class ProductCategoriesController extends BaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Product::query();
+        $query = ProductCategory::query();
 
         if ($request->query('search')) {
             $searchTerm = $request->query('search');

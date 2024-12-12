@@ -10,7 +10,12 @@ use App\Http\Resources\DepartmentResource;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use Illuminate\Validation\ValidationException;
 
+   /**
+     * @group Department Management
+     */
+    
 class DepartmentController extends BaseController
 {
     /**
@@ -47,8 +52,9 @@ class DepartmentController extends BaseController
     {
         $department = new Department();
         $department->department_name = $request->input("department_name");
-        $department->save();
-        
+        if(!$department->save()) {
+            dd($department); exit;
+        }
         return $this->sendResponse(['Department'=> new DepartmentResource($department)], 'Department Created Successfully');
     }
 

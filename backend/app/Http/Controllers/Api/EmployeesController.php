@@ -13,31 +13,60 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Controllers\Api\BaseController;
 
+  /**
+     * @group Employee Management
+     */
+    
 class EmployeesController extends BaseController
 {
     /**
      * Display All Employees.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $users = User::all();
-        $employees = Employee::all();
-        return $this->sendResponse(['Users'=> UserResource::collection($users),'Employees'=> EmployeeResource::collection($employees)], "all Employees retrived sucessfully");
+        $query = Employee::query();
+
+        if ($request->query('search')) {
+            $searchTerm = $request->query('search');
+    
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('employee_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        $employees = $query->paginate(5);
+
+        return $this->sendResponse(["Employees"=>EmployeeResource::collection($employees),
+        'pagination' => [
+            'current_page' => $employees->currentPage(),
+            'last_page' => $employees->lastPage(),
+            'per_page' => $employees->perPage(),
+            'total' => $employees->total(),
+        ]], "Employees retrived successfully");
     }
 
     /**
      * Store Employees.
+     * @bodyParam employee_name string The name of the Employee.
+     * @bodyParam email string The name of the Employee.
+     * @bodyParam active string The name of the Employee.
+     * @bodyParam password string The name of the Employee.
+     * @bodyParam role string The name of the Employee.
+     * @bodyParam department_id string The name of the Employee.
+     * @bodyParam mobile string The name of the Employee.
+     * @bodyParam joining_date string The name of the Employee.
+     * @bodyParam resignation_date string The name of the Employee.
      */
     public function store(Request $request): JsonResponse
     {
         $user = new User();
-        $user->name = $request->input('name');
+        $user->name = $request->input('employee_name');
         $user->email = $request->input('email');
         $user->active = $request->input('active');
         $user->password = Hash::make($request->input('password'));
         $user->save();
-         $memberRole = $request->input("role");
-         $memberRole = Role::where("name",$memberRole)->first();
+        
+        $memberRole = $request->input("role");
+        $memberRole = Role::where("name",$memberRole)->first();
        
         $user->assignRole($memberRole);
         
@@ -70,6 +99,15 @@ class EmployeesController extends BaseController
 
     /**
      * Update Employee.
+     * @bodyParam employee_name string The name of the Employee.
+     * @bodyParam email string The name of the Employee.
+     * @bodyParam active string The name of the Employee.
+     * @bodyParam password string The name of the Employee.
+     * @bodyParam role string The name of the Employee.
+     * @bodyParam department_id string The name of the Employee.
+     * @bodyParam mobile string The name of the Employee.
+     * @bodyParam joining_date string The name of the Employee.
+     * @bodyParam resignation_date string The name of the Employee.
      */
     public function update(Request $request, string $id): JsonResponse
     {
