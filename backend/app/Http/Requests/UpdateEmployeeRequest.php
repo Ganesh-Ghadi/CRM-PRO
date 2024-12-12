@@ -28,6 +28,10 @@ class UpdateEmployeeRequest extends FormRequest
                 'required',
                 'unique:employees,email,' . $this->route('employee'), 
             ],
+            'mobile' => [
+                'required',
+                'unique:employees,mobile,' . $this->route('employee'), 
+            ],
         ];
     }
 

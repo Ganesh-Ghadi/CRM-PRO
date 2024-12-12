@@ -11,9 +11,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Requests\UpdateEmployeeRequest;
 
-  /**
+   /**
      * @group Employee Management
      */
     
@@ -54,9 +56,8 @@ class EmployeesController extends BaseController
      * @bodyParam department_id string The name of the Employee.
      * @bodyParam mobile string The name of the Employee.
      * @bodyParam joining_date string The name of the Employee.
-     * @bodyParam resignation_date string The name of the Employee.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreEmployeeRequest $request): JsonResponse
     {
         $user = new User();
         $user->name = $request->input('employee_name');
@@ -77,7 +78,7 @@ class EmployeesController extends BaseController
         $employee->email = $request->input('email');
         $employee->mobile = $request->input('mobile');
         $employee->joining_date = $request->input('joining_date');
-        $employee->resignation_date = $request->input('resignation_date');
+        // $employee->resignation_date = $request->input('resignation_date');
         $employee->save();
        
         return $this->sendResponse(['User'=> new UserResource($user), 'employee'=>new EmployeeResource($employee)], "Employees stored successfully");
@@ -107,9 +108,8 @@ class EmployeesController extends BaseController
      * @bodyParam department_id string The name of the Employee.
      * @bodyParam mobile string The name of the Employee.
      * @bodyParam joining_date string The name of the Employee.
-     * @bodyParam resignation_date string The name of the Employee.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateEmployeeRequest $request, string $id): JsonResponse
     {
         $employee = Employee::find($id);
 
@@ -132,7 +132,7 @@ class EmployeesController extends BaseController
         $employee->email = $request->input('email');
         $employee->mobile = $request->input('mobile');
         $employee->joining_date = $request->input('joining_date');
-        $employee->resignation_date = $request->input('resignation_date');
+        // $employee->resignation_date = $request->input('resignation_date');
         $employee->save();
        
         return $this->sendResponse(['User'=> new UserResource($user), 'employee'=>new EmployeeResource($employee)], "Employees updated successfully");
@@ -146,11 +146,31 @@ class EmployeesController extends BaseController
     {
         $employee = Employee::find($id);
         if(!$employee){
-            return $this->sendError("employee not found", ['error'=>'employee not found']);
+            return $this->sendError("employee not found", ['error'=> 'employee not found']);
         }
         $user = User::find($employee->user_id);
         $employee->delete();
         $user->delete();
         return $this->sendResponse([], "employee deleted successfully");
     }
+
+    /**
+     * resignation.
+     */
+    public function resignation(Request $request, string $id): JsonResponse
+    {
+        $employee = Employee::find($id);
+        if(!$employee){
+            return $this->sendError("employee not found", ['error'=>'employee not found']);
+        }
+        $val = 0;
+        $user = User::find($employee->user_id);
+        $employee->resignation_date = $request->input('resignation_date');
+        $employee->save();
+        $user->active = $val;
+        $user->save();
+        return $this->sendResponse(['User'=> new UserResource($user), 'employee'=>new EmployeeResource($employee)], "employee data updated successfully");
+    }
+
+    
 }

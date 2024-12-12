@@ -12,9 +12,11 @@ use App\Http\Requests\UpdateClientRequest;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Api\ClientsController;
 
-     /**
+ 
+    /**
      * @group Clients Management.
      */
+ 
   
 class ClientsController extends BaseController
 {

@@ -41,6 +41,7 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::resource('projects', ProjectsController::class); 
    Route::resource('departments', DepartmentController::class);  
    Route::resource('employees', EmployeesController::class);  
+   Route::post('/employees/resignation/{id}', [EmployeesController::class, 'resignation'])->name("employee.resignation");
    Route::resource('products', ProductsController::class);  
    Route::resource('companies', CompaniesController::class);  
    Route::resource('contacts', ContactsController::class);  
