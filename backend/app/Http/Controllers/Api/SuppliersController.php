@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SupplierResource;
+use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Requests\UpdateSupplierRequest;
 
  /**
      * @group Suppliers Management.
@@ -18,11 +20,27 @@ class SuppliersController extends BaseController
     /**
      * All Suppliers.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $suppliers = Supplier::all();
+        $query = Supplier::query();
+
+        if ($request->query('search')) {
+            $searchTerm = $request->query('search');
+    
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('supplier', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        $suppliers = $query->paginate(5);
+
+        return $this->sendResponse(["Suppliers"=>SupplierResource::collection($suppliers),
+        'pagination' => [
+            'current_page' => $suppliers->currentPage(),
+            'last_page' => $suppliers->lastPage(),
+            'per_page' => $suppliers->perPage(),
+            'total' => $suppliers->total(),
+        ]], "Suppliers retrived successfully");
         
-        return $this->sendResponse(["Suppliers"=> SupplierResource::collection($suppliers)], 'Supplier Retrived Successfully');
     }
 
     /**

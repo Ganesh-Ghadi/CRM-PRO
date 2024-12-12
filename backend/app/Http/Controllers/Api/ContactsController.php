@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Client;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ClientResource;
 use App\Http\Resources\ContactResource;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
@@ -21,11 +23,27 @@ class ContactsController extends BaseController
    /**
      * All Contact.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $contacts = Contact::all();
-        return $this->sendResponse(['Contact'=> ContactResource::collection($contacts)], "Contact retrived successfuly");
+        $query = Contact::query();
 
+        if ($request->query('search')) {
+            $searchTerm = $request->query('search');
+    
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('contact_person', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        $contact = $query->paginate(5);
+
+        return $this->sendResponse(["Contact"=>ContactResource::collection($contact),
+        'pagination' => [
+            'current_page' => $contact->currentPage(),
+            'last_page' => $contact->lastPage(),
+            'per_page' => $contact->perPage(),
+            'total' => $contact->total(),
+        ]], "Contact retrived successfully");
+        
     }
 
     /**
@@ -55,7 +73,7 @@ class ContactsController extends BaseController
             $clients->email = $request->input("email"); 
             $clients->save();
         };
-        $contact->client_id = $request->input("client_id");
+        $contact->client_id = $clients->id;
         $contact->contact_person = $request->input("contact_person");
         $contact->department = $request->input("department");
         $contact->designation = $request->input("designation");
@@ -63,7 +81,7 @@ class ContactsController extends BaseController
         $contact->mobile_2 = $request->input("mobile_2");
         $contact->email = $request->input("email");
         $contact->save();
-        return $this->sendResponse(['Contact'=> new ContactResource($contact)], "Contact Stored successfuly");
+        return $this->sendResponse(['Contact'=> new ContactResource($contact), 'Client'=> new ClientResource($clients) ],  "Contact Stored successfully");
 
     }
          
@@ -118,7 +136,7 @@ class ContactsController extends BaseController
         $contact->mobile_2 = $request->input("mobile_2");
         $contact->email = $request->input("email");
         $contact->save();
-        return $this->sendResponse(['Contact'=> new ContactResource($contact)], "Contact Updated successfuly");
+        return $this->sendResponse(['Contact'=> new ContactResource($contact), 'Client'=> new ClientResource($clients)], "Contact Updated successfuly");
          
     }
 
